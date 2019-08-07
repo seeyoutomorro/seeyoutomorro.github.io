@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | 惊鸿</title>
+  <title>惊鸿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="XSS进阶：https://www.freebuf.com/articles/web/153055.html XSS常用的测试语句有：&amp;lt;scrip&amp;gt;alert(/xss/)&amp;lt;/scrip&amp;gt; &amp;lt;img src=x onerror=alert(/xss/)&amp;gt; &amp;lt;svg onload=alert(xss/)&amp;gt; &amp;lt;a href=javascript:a">
+<meta property="og:type" content="website">
 <meta property="og:title" content="惊鸿">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta property="og:url" content="http://yoursite.com/xss/xss进阶.html">
 <meta property="og:site_name" content="惊鸿">
+<meta property="og:description" content="XSS进阶：https://www.freebuf.com/articles/web/153055.html XSS常用的测试语句有：&amp;lt;scrip&amp;gt;alert(/xss/)&amp;lt;/scrip&amp;gt; &amp;lt;img src=x onerror=alert(/xss/)&amp;gt; &amp;lt;svg onload=alert(xss/)&amp;gt; &amp;lt;a href=javascript:a">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-23T06:08:01.231Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="惊鸿">
+<meta name="twitter:description" content="XSS进阶：https://www.freebuf.com/articles/web/153055.html XSS常用的测试语句有：&amp;lt;scrip&amp;gt;alert(/xss/)&amp;lt;/scrip&amp;gt; &amp;lt;img src=x onerror=alert(/xss/)&amp;gt; &amp;lt;svg onload=alert(xss/)&amp;gt; &amp;lt;a href=javascript:a">
   
     <link rel="alternative" href="/atom.xml" title="惊鸿" type="application/atom+xml">
   
@@ -167,49 +171,149 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="page-" class="article article-type-page " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="XSS进阶："><a href="#XSS进阶：" class="headerlink" title="XSS进阶："></a>XSS进阶：</h1><p><a href="https://www.freebuf.com/articles/web/153055.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/153055.html</a></p>
+<h2 id="XSS常用的测试语句有："><a href="#XSS常用的测试语句有：" class="headerlink" title="XSS常用的测试语句有："></a>XSS常用的测试语句有：</h2><p><code>&lt;scrip&gt;alert(/xss/)&lt;/scrip&gt;</code></p>
+<p><code>&lt;img src=x onerror=alert(/xss/)&gt;</code></p>
+<p><code>&lt;svg onload=alert(xss/)&gt;</code></p>
+<p><code>&lt;a href=javascript:alert(/xss/)&gt;</code></p>
+<h2 id="常见的xss的绕过编码有js编码，HTML实体编码和URL编码。"><a href="#常见的xss的绕过编码有js编码，HTML实体编码和URL编码。" class="headerlink" title="常见的xss的绕过编码有js编码，HTML实体编码和URL编码。"></a>常见的xss的绕过编码有js编码，HTML实体编码和URL编码。</h2><h3 id="JS编码"><a href="#JS编码" class="headerlink" title="JS编码"></a>JS编码</h3><p>JS提供了四种字符编码的策略，</p>
+<p>三个八进制数字，如果个数不够，在前面补0，列如:”e”的编码为“\145”.</p>
+<p>两个十六进制数字，如果个数不够，在前面补0，列如“e”的编码为“\x65”.</p>
+<p>四个十六进制数字，如果个数不够，在前面补0，列如“e”的编码为“\u0065”</p>
+<p>对于一些控制字符，使用特殊的C类型的转义风格（例如\n和\r）</p>
+<h3 id="HTML-实体编码"><a href="#HTML-实体编码" class="headerlink" title="HTML 实体编码"></a>HTML 实体编码</h3><p>命名实体：以&amp;开头，以分号结尾的，列如“&lt;”的编码是“&amp;lt“.</p>
+<p>字符编码：十进制，十六进制ASCII码或Unicode字符编码，样式为“&amp;#数值；“，</p>
+<p>列如“&lt;“ 可以编码为”&#060;“和 ”&amp;#x3c；“。</p>
+<h3 id="URL-编码"><a href="#URL-编码" class="headerlink" title="URL 编码"></a>URL 编码</h3><p>这里的URL编码，也是两次URL全编码的结果。如果alert被过滤，</p>
+<p>结果为:<code>%25%36%31%25%36%43%25%36%35%25%37%32%25%37%34</code></p>
+<p>在使用XSS编码测试时，需要考虑HTML渲染的顺序，特别是针对多种编码组合时，要选择合适的编码方式进行测试。</p>
+<h2 id="使用XXS平台测试xss漏洞。"><a href="#使用XXS平台测试xss漏洞。" class="headerlink" title="使用XXS平台测试xss漏洞。"></a>使用XXS平台测试xss漏洞。</h2><h1 id="XSS漏洞修复建议"><a href="#XSS漏洞修复建议" class="headerlink" title="XSS漏洞修复建议"></a>XSS漏洞修复建议</h1><p>因为XSS漏洞涉及输入和输出两部分，所以其修复也分为两种。</p>
+<p>过滤输入的数据，包括<code>““” “&lt;“ “&gt;” “on”</code>等非法字符。</p>
+<p>对输出到页面的数据进行相应的编码转换，包括HTML实体编码，JavaScript 编码等。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/08/07/hello-world/" class="archive-article-date">
-  	<time datetime="2019-08-07T07:54:58.457Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/08/07/hello-world/">你好访问者Hello World</a>
-    </h1>
-  
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/xss/xss进阶.html" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
+
   
 
-    
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
+  
+
+  
+
+  
+
+  
 
 
           </div>
@@ -233,7 +337,7 @@
 		mathjax: false,
 		isHome: false,
 		isPost: false,
-		isArchive: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

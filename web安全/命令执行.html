@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | 惊鸿</title>
+  <title>惊鸿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="命令执行漏洞介绍命令执行漏洞应用程序有时需要调用一些执行系统命令的函数，如在PHP中，使用system.exec，shell_exec，passthru，passthru，popen，proc_popen等函数可以执行系统命令，当黑客能控制这些函数中的参数时，就可以将恶意的系统命令拼接到正常命令中，从而造成命令执行攻击，这就是命令执行漏洞。 命令执行漏洞攻击 测试地址: http://192.16">
+<meta property="og:type" content="website">
 <meta property="og:title" content="惊鸿">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta property="og:url" content="http://yoursite.com/web安全/命令执行.html">
 <meta property="og:site_name" content="惊鸿">
+<meta property="og:description" content="命令执行漏洞介绍命令执行漏洞应用程序有时需要调用一些执行系统命令的函数，如在PHP中，使用system.exec，shell_exec，passthru，passthru，popen，proc_popen等函数可以执行系统命令，当黑客能控制这些函数中的参数时，就可以将恶意的系统命令拼接到正常命令中，从而造成命令执行攻击，这就是命令执行漏洞。 命令执行漏洞攻击 测试地址: http://192.16">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-23T08:43:39.851Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="惊鸿">
+<meta name="twitter:description" content="命令执行漏洞介绍命令执行漏洞应用程序有时需要调用一些执行系统命令的函数，如在PHP中，使用system.exec，shell_exec，passthru，passthru，popen，proc_popen等函数可以执行系统命令，当黑客能控制这些函数中的参数时，就可以将恶意的系统命令拼接到正常命令中，从而造成命令执行攻击，这就是命令执行漏洞。 命令执行漏洞攻击 测试地址: http://192.16">
   
     <link rel="alternative" href="/atom.xml" title="惊鸿" type="application/atom+xml">
   
@@ -167,49 +171,159 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="page-" class="article article-type-page " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="命令执行漏洞"><a href="#命令执行漏洞" class="headerlink" title="命令执行漏洞"></a>命令执行漏洞</h1><h2 id="介绍命令执行漏洞"><a href="#介绍命令执行漏洞" class="headerlink" title="介绍命令执行漏洞"></a>介绍命令执行漏洞</h2><p>应用程序有时需要调用一些执行系统命令的函数，如在PHP中，使用system.exec，shell_exec，passthru，passthru，popen，proc_popen等函数可以执行系统命令，当黑客能控制这些函数中的参数时，就可以将恶意的系统命令拼接到正常命令中，从而造成命令执行攻击，这就是命令执行漏洞。</p>
+<h2 id="命令执行漏洞攻击"><a href="#命令执行漏洞攻击" class="headerlink" title="命令执行漏洞攻击"></a>命令执行漏洞攻击</h2><p> 测试地址: <a href="http://192.168.1.180/4.9.3/rce.php?ip=127.0.0.1|dir" target="_blank" rel="noopener">http://192.168.1.180/4.9.3/rce.php?ip=127.0.0.1|dir</a></p>
+<p>Php文件页面中提供了ping的功能，当给参数IP输入127.0.0.1时，程序会执行ping127.0.0.1 然后将ping的结果返回到页面上。</p>
+<p> 而如果将参数IP设置为127.0.0.1 | dir ,然后再次访问，从返回结果可以看到，程序直接将目录结构返回到页面上了，这里就利用了管道符号”|”让系统执行了命令dir。</p>
+<p>列如以下常用的管道符。</p>
+<p>“|”：直接执行后面的语句。列如:ping 127.0.0.1|whoami</p>
+<p>“||”：如果前面执行的语句执行出错，则执行后面的语句，前面的语句只能为假。列如：ping2|whoami。</p>
+<p>“&amp;”：如果前面的语句为假则直接执行后面的语句，前面的语句可真可假。列如:ping 127.0.0.1&amp;whoami.</p>
+<p>“&amp;&amp;”：如果前面的语句为假则直接出错，也不执行后面的语句，前面的语句只能为真。列如:ping 127.0.0.1&amp;&amp;whoami</p>
+<p>Linux系统支持的管道符如下：</p>
+<p>“;”：执行完前面的语句再执行后面的。列如:ping 127.0.0.1;whoami。</p>
+<p>“|”：显示后面语句的执行结果。列如:ping 127.0.0.1|whoami。</p>
+<p>“||”：当前面的语句执行出错时，执行后面的语句。列如:ping 1 || whoami。</p>
+<p>“&amp;”：如果当前的语句为假则直接执行后面的语句，前面的语句可真可假。列如: ping 127.0.0.1&amp;whoami。</p>
+<p>“&amp;&amp;”: 如果前面的语句为假则直接出错，也不执行后面的，前面的语句只能为真。列如:ping 127.0.0.1&amp;&amp;whoami。</p>
+<h2 id="命令执行漏洞代码分析"><a href="#命令执行漏洞代码分析" class="headerlink" title="命令执行漏洞代码分析"></a>命令执行漏洞代码分析</h2><p>服务器处理ping的代码如，程序获取GET参数IP，然后拼接到system()函数中，利用system()函数执行ping的功能，但是此处没有对参数IP做过滤和检测，导致可以利用管道符执行其他的系统命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">echo system(&quot;ping -n 2 &quot; . $_GET[&apos;ip&apos;]);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>命令执行漏洞修复建议：</p>
+<ol>
+<li><p>尽量不要使用命令执行函数</p>
+</li>
+<li><p>客户端提交的变量在进入执行命令函数前要做好过滤和检测。</p>
+</li>
+<li><p>在使用动态函数之前，确保使用的函数是指定的函数之一。</p>
+</li>
+<li><p>对PHP语言来说，不能完全控制的危险函数最好不要使用。</p>
+</li>
+</ol>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/08/07/hello-world/" class="archive-article-date">
-  	<time datetime="2019-08-07T07:54:58.457Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/08/07/hello-world/">你好访问者Hello World</a>
-    </h1>
-  
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/web安全/命令执行.html" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
+
   
 
-    
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
+  
+
+  
+
+  
+
+  
 
 
           </div>
@@ -233,7 +347,7 @@
 		mathjax: false,
 		isHome: false,
 		isPost: false,
-		isArchive: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

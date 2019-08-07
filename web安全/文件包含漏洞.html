@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | 惊鸿</title>
+  <title>惊鸿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="文件包含文件包含常用函数 在php中提供了四种包含文件的函数 1.incudec()       //找不到被包含的文件时只会产生警告（E_WARNING），脚本将继续执行； 2.incudec_once()        //此语句和incudec（）语句类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含； 3.require()        //找不到被包含的文件时会产生致命错误（">
+<meta property="og:type" content="website">
 <meta property="og:title" content="惊鸿">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta property="og:url" content="http://yoursite.com/web安全/文件包含漏洞.html">
 <meta property="og:site_name" content="惊鸿">
+<meta property="og:description" content="文件包含文件包含常用函数 在php中提供了四种包含文件的函数 1.incudec()       //找不到被包含的文件时只会产生警告（E_WARNING），脚本将继续执行； 2.incudec_once()        //此语句和incudec（）语句类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含； 3.require()        //找不到被包含的文件时会产生致命错误（">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-30T10:12:26.838Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="惊鸿">
+<meta name="twitter:description" content="文件包含文件包含常用函数 在php中提供了四种包含文件的函数 1.incudec()       //找不到被包含的文件时只会产生警告（E_WARNING），脚本将继续执行； 2.incudec_once()        //此语句和incudec（）语句类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含； 3.require()        //找不到被包含的文件时会产生致命错误（">
   
     <link rel="alternative" href="/atom.xml" title="惊鸿" type="application/atom+xml">
   
@@ -167,49 +171,157 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="page-" class="article article-type-page " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h1><p>文件包含常用函数</p>
+<p>在php中提供了四种包含文件的函数</p>
+<p>1.incudec()       //找不到被包含的文件时只会产生警告（E_WARNING），脚本将继续执行；</p>
+<p>2.incudec_once()        //此语句和incudec（）语句类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含；</p>
+<p>3.require()        //找不到被包含的文件时会产生致命错误（E_COMPILE_ERROR），并停止脚本。    </p>
+<p>4.require_once()        //此行语句和require（）语句类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含。</p>
+<p>文件包含实列：</p>
+<p>1.本地文件包含</p>
+<p>2.远程包含</p>
+<p>文件包含利用：</p>
+<h2 id="1-读取敏感文件"><a href="#1-读取敏感文件" class="headerlink" title="1.读取敏感文件"></a>1.读取敏感文件</h2><p>​    win系统</p>
+<p>​    linux系统</p>
+<h2 id="2-远程包含shell"><a href="#2-远程包含shell" class="headerlink" title="2.远程包含shell"></a>2.远程包含shell</h2><p>关键判断allow_url_fopen是激活的</p>
+<h2 id="3-本地包含配合文件上传。"><a href="#3-本地包含配合文件上传。" class="headerlink" title="3.本地包含配合文件上传。"></a>3.本地包含配合文件上传。</h2><p>​    1.先上传带有木马的/头像/文档</p>
+<p>​    2.再用包含去访问</p>
+<h2 id="4-使用php封装协议"><a href="#4-使用php封装协议" class="headerlink" title="4.使用php封装协议"></a>4.使用php封装协议</h2><p>​    1使用封装协议读取php文件</p>
+<p>​    2.写入php文件</p>
+<p>​    受限与allow_url_include选项为on</p>
+<h2 id="5-包含Apache日志文件，"><a href="#5-包含Apache日志文件，" class="headerlink" title="5.包含Apache日志文件，"></a>5.包含Apache日志文件，</h2><p>​    1.确定apache的日志路径</p>
+<p>利用：访问不存在的路径会写到access.log文件中</p>
+<p>如何通过burp来绕过编码？</p>
+<h2 id="6-截断包含"><a href="#6-截断包含" class="headerlink" title="6.截断包含"></a>6.截断包含</h2><p>由于固定扩展名找不到1.jpg.php导致访问失败。</p>
+<p>可以采用page=1.jpg%00</p>
+<p>这种方法只使用于magic_quotes_gpc=off时 如果为on会被转义。</p>
+<p>但可以用：单引号（’）双引号（‘’）反斜杠（\）null </p>
+<h2 id="7-绕过waf防火墙"><a href="#7-绕过waf防火墙" class="headerlink" title="7.绕过waf防火墙"></a>7.绕过waf防火墙</h2><p>文件包含用来制作后门，躲避web杀毒软件的检测。</p>
+<p>但可以用：单引号（‘）双</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/08/07/hello-world/" class="archive-article-date">
-  	<time datetime="2019-08-07T07:54:58.457Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/08/07/hello-world/">你好访问者Hello World</a>
-    </h1>
-  
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/web安全/文件包含漏洞.html" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
+
   
 
-    
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
+  
+
+  
+
+  
+
+  
 
 
           </div>
@@ -233,7 +345,7 @@
 		mathjax: false,
 		isHome: false,
 		isPost: false,
-		isArchive: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
