@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="Sun Aug 25 2019 08:00:00 GMT+0800 (GMT+08:00)">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="惊鸿">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="惊鸿">
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="Sun Aug 25 2019 08:00:00 GMT+0800 (GMT+08:00)">
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="惊鸿">
+  <!--Type page-->
+  
+      <meta property="og:type" content="website">
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>惊鸿</title>
+
+
+  <link rel="shortcut icon" href="http://ww1.sinaimg.cn/large/007bHQE8ly1g6bypg32rfj30wn0tjtdb.jpg">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="http://ww1.sinaimg.cn/large/007bHQE8ly1g6bypg32rfj30wn0tjtdb.jpg" alt="惊鸿" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  archive
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            Untitled
+            
+          </h1>
+          <p class="posted-on">
+          2019-08-07
+          </p>
+          <div class="tags-links">
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content has_line_number">
+          <h1 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h1><p>文件包含常用函数</p>
+<p>在php中提供了四种包含文件的函数</p>
+<p>1.incudec()       //找不到被包含的文件时只会产生警告（E_WARNING），脚本将继续执行；</p>
+<p>2.incudec_once()        //此语句和incudec（）语句类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含；</p>
+<p>3.require()        //找不到被包含的文件时会产生致命错误（E_COMPILE_ERROR），并停止脚本。    </p>
+<p>4.require_once()        //此行语句和require（）语句类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含。</p>
+<p>文件包含实列：</p>
+<p>1.本地文件包含</p>
+<p>2.远程包含</p>
+<p>文件包含利用：</p>
+<h2 id="1-读取敏感文件"><a href="#1-读取敏感文件" class="headerlink" title="1.读取敏感文件"></a>1.读取敏感文件</h2><p>​    win系统</p>
+<p>​    linux系统</p>
+<h2 id="2-远程包含shell"><a href="#2-远程包含shell" class="headerlink" title="2.远程包含shell"></a>2.远程包含shell</h2><p>关键判断allow_url_fopen是激活的</p>
+<h2 id="3-本地包含配合文件上传。"><a href="#3-本地包含配合文件上传。" class="headerlink" title="3.本地包含配合文件上传。"></a>3.本地包含配合文件上传。</h2><p>​    1.先上传带有木马的/头像/文档</p>
+<p>​    2.再用包含去访问</p>
+<h2 id="4-使用php封装协议"><a href="#4-使用php封装协议" class="headerlink" title="4.使用php封装协议"></a>4.使用php封装协议</h2><p>​    1使用封装协议读取php文件</p>
+<p>​    2.写入php文件</p>
+<p>​    受限与allow_url_include选项为on</p>
+<h2 id="5-包含Apache日志文件，"><a href="#5-包含Apache日志文件，" class="headerlink" title="5.包含Apache日志文件，"></a>5.包含Apache日志文件，</h2><p>​    1.确定apache的日志路径</p>
+<p>利用：访问不存在的路径会写到access.log文件中</p>
+<p>如何通过burp来绕过编码？</p>
+<h2 id="6-截断包含"><a href="#6-截断包含" class="headerlink" title="6.截断包含"></a>6.截断包含</h2><p>由于固定扩展名找不到1.jpg.php导致访问失败。</p>
+<p>可以采用page=1.jpg%00</p>
+<p>这种方法只使用于magic_quotes_gpc=off时 如果为on会被转义。</p>
+<p>但可以用：单引号（’）双引号（‘’）反斜杠（\）null </p>
+<h2 id="7-绕过waf防火墙"><a href="#7-绕过waf防火墙" class="headerlink" title="7.绕过waf防火墙"></a>7.绕过waf防火墙</h2><p>文件包含用来制作后门，躲避web杀毒软件的检测。</p>
+<p>但可以用：单引号（‘）双</p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          Sun Aug 25 2019 08:00:00 GMT+0800 (GMT+08:00)
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Contact</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com" class="icon icon-github" target="_blank">github</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Search</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>惊鸿 &copy; 2019</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+
+
+
+
+</body>
+
+</html>

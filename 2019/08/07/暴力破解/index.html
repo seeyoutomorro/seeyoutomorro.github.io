@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="Sun Aug 25 2019 08:00:00 GMT+0800 (GMT+08:00)">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="惊鸿">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="SQL">
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="Sun Aug 25 2019 08:00:00 GMT+0800 (GMT+08:00)">
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="惊鸿">
+  <!--Type page-->
+  
+      <meta property="og:type" content="article">
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>SQL - 惊鸿</title>
+
+
+  <link rel="shortcut icon" href="http://ww1.sinaimg.cn/large/007bHQE8ly1g6bypg32rfj30wn0tjtdb.jpg">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="http://ww1.sinaimg.cn/large/007bHQE8ly1g6bypg32rfj30wn0tjtdb.jpg" alt="惊鸿" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  archive
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            SQL
+            
+          </h1>
+          <p class="posted-on">
+          2019-08-07
+          </p>
+          <div class="tags-links">
+            
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content has_line_number">
+          <h2 id="暴力破解："><a href="#暴力破解：" class="headerlink" title="暴力破解："></a>暴力破解：</h2><h2 id="介绍暴力破解漏洞"><a href="#介绍暴力破解漏洞" class="headerlink" title="介绍暴力破解漏洞"></a>介绍暴力破解漏洞</h2><a id="more"></a>
+<p>暴力破解的产生是由于服务器端没有做限制，导致攻击者可以通过暴力的手段破解所需要信息，如用户名，密码，验证码等。暴力破解需要一个庞大的字典，如4位数字的验证码，那么暴力破解的范围就是0000-9999,暴力破解的关键在于字典的大小。</p>
+<h2 id="暴力破解漏洞攻击"><a href="#暴力破解漏洞攻击" class="headerlink" title="暴力破解漏洞攻击"></a>暴力破解漏洞攻击</h2><p> sqli-labs(五)——盲注（boolean盲注以及时间盲注）</p>
+<p>第八关：</p>
+<p>url：<a href="http://192.168.1.180/sqli-labs/Less-8/?id=1" target="_blank" rel="noopener">http://192.168.1.180/sqli-labs/Less-8/?id=1</a></p>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g59qugxhnnj30fe077q3x.jpg" alt></p>
+<p>没有查询信息，输入id=1’ 报错 ，也没有报错信息，这里应该是个盲注</p>
+<p>使用boolean的盲注吧</p>
+<p>先判断boolean的盲注可行</p>
+<p>输入id=1’ and ‘1’=’1’ %23 页面正常</p>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g59qv0wygrj30fe077ab3.jpg" alt></p>
+<p>输入id=1’ and ‘1’=’2’ %23 页面报错</p>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g59qvhy86hj30fe078my5.jpg" alt></p>
+<p>由于返回结果只有两种结果，所以此处可以尝试利用Boolean注入，</p>
+<p>Boolean注入是指构造SQL判断语句，通过查看页面的返回结果来推测那些SQL判断条件是成立的，以此获取数据库中的数据。我们先判断数据库名的长度，语句如：</p>
+<p>‘ and length(database())&gt;=1–+</p>
+<p>有单引号，所以需要注释符来注释。1的位置上可以是任意数字，如’and length (database())&gt;=3–+和‘and length (database())&gt;=4–+,我们可以构造这样的语句，然后观察页面的返回结果。</p>
+<p><a href="http://192.168.1.180/sqli-labs/Less-8/?id=1&#39;" target="_blank" rel="noopener">http://192.168.1.180/sqli-labs/Less-8/?id=1&#39;</a> and length(database())&gt;=8–+</p>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g59qw8hy3wj30fe077t9q.jpg" alt></p>
+<p><a href="http://192.168.1.180/sqli-labs/Less-8/?id=1&#39;" target="_blank" rel="noopener">http://192.168.1.180/sqli-labs/Less-8/?id=1&#39;</a> and length(database())&gt;=9–+</p>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g59qwikgb4j30fe06p74y.jpg" alt></p>
+<p>数据库库名长度大于等于8，结果返回正常。大于等于9，结果出现了返回页面不正常。</p>
+<p>由此判断出数据库的库名长度为8</p>
+<p>有几个mysql内置的函数需要记住：</p>
+<p>length(str)：返回str字符串的长度。</p>
+<p>substr(str, pos, len)：将str从pos位置开始截取len长度的字符进行返回。</p>
+<p>注意这里的pos位置是从1开始的，不是数组的0开始</p>
+<p>mid(str,pos,len):跟上面的一样，截取字符串</p>
+<p> ascii(str)：返回字符串str的最左面字符的ASCII代码值。</p>
+<p>ord(str):同上，返回ascii码</p>
+<p>if(a,b,c) :a为条件，a为true，返回b，否则返回c，如if(1&gt;2,1,0),返回0</p>
+<p>盲注需要一个字符一个字符的来判断，必须如先判断当前的数据库名的第一个字符是什么（可以使用sqlmap或脚本）</p>
+<p>接着，使用逐字符判断的方式获取数据库库名。数据库库名的范围一般在a-z，0-9之内，可能还有一些特殊字符，这里的字母不区分大小写。逐字符判断的SQL语句：</p>
+<p>‘ and substr(database(),1,1)=’t’–+</p>
+<p>Substr是截取的意思，其意思是截取database()的值，从第一个字符开始，每次只返回一个。</p>
+<p>Substr的用法跟limit的有区别，需要注意。Limit是从0开始排序，而这里是从1开始排序。可以使用Burp的爆破功能爆破其中的‘t‘值，</p>
+<p>如：</p>
+<ol>
+<li>开启代理，启动burp</li>
+</ol>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g59qxbib6dj30fe0390t3.jpg" alt></p>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g59qxj9mtqj30fe07atac.jpg" alt></p>
+<ol start="2">
+<li>发送到intruder中进行处理</li>
+</ol>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g59qy41syfj30fe0ghgoo.jpg" alt></p>
+<p>3.选中需要进行批量化替换的关键词，添加编辑</p>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g59qyg4okxj30fe0gh0vf.jpg" alt></p>
+<p>4.添加字典</p>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g59qyp7s45j30fe0ghjtw.jpg" alt></p>
+<p>5.开始进行攻击</p>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g59qyzuvywj30fe0ghtbi.jpg" alt></p>
+<p>6.对结果进行判断：</p>
+<p><img src="http://ww1.sinaimg.cn/large/007bHQE8gy1g59qzdovdqj30fe0e3wgt.jpg" alt></p>
+<p>这样依此猜解8次组合出完整的数据库名称。</p>
+<p>结合sqlmap对url进行注入</p>
+<p>有几个mysql内置的函数需要记住：</p>
+<p>length(str)：返回str字符串的长度。</p>
+<p>substr(str, pos, len)：将str从pos位置开始截取len长度的字符进行返回。注意这里的pos位置是从1开始的，不是数组的0开始</p>
+<p>mid(str,pos,len):跟上面的一样，截取字符串</p>
+<p> ascii(str)：返回字符串str的最左面字符的ASCII代码值。</p>
+<p>ord(str):同上，返回ascii码</p>
+<p>if(a,b,c) :a为条件，a为true，返回b，否则返回c，如if(1&gt;2,1,0),返回0</p>
+<p>盲注需要一个字符一个字符的来判断，必须如先判断当前的数据库名的第一个字符是什么（可以使用sqlmap或脚本）</p>
+<h2 id="暴力破解漏洞修复建议"><a href="#暴力破解漏洞修复建议" class="headerlink" title="暴力破解漏洞修复建议"></a>暴力破解漏洞修复建议</h2><p>如果用户登录次数超过设置的阀值，则锁定账号。</p>
+<p>如果某个IP登录次数超过设置的阀值，则锁定IP<br> 锁定IP存在的一个问题是：如果多个用户使用的是同·一个·IP，则会造成其他用户也不能登录。</p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2019/08/07/sql注入的基础/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> Older Posts</a>
+        </div>
+      
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          Sun Aug 25 2019 08:00:00 GMT+0800 (GMT+08:00)
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Contact</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com" class="icon icon-github" target="_blank">github</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Search</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>惊鸿 &copy; 2019</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+
+
+
+
+</body>
+
+</html>
